@@ -37,8 +37,8 @@ jobs:
 
       - name: Set up Git configuration
         run: |
-          git config user.name "SpicyGrzl"
-          git config user.email "spicygrzl@spicelabs.io"
+          git config user.name --global "SpicyGrzl"
+          git config user.email --global "spicygrzl@spicelabs.io"
 
       - name: Create Git tag v1.2.3 for testing
         run: |
