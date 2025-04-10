@@ -7,5 +7,5 @@ This GitHub Action ensures that the Git tag (e.g. `v1.2.3`) matches the version 
 #### Usage
 ```yaml
 - name: Check Cargo version matches tag
-  uses: spice-labs/check-cargo-version@v0.0.1
+  uses: spice-labs/cargo-version-check@v0.0.1
 ```
