@@ -29,16 +29,16 @@ jobs:
           echo 'version = "1.2.3"' >> Cargo.toml
           cd ..
 
+      - name: Set up Git configuration
+        run: |
+          git config --global user.name "${{ secrets.GH_USERNAME_SG }}"
+          git config --global user.email "actions@github.com"
+
       - name: Create initial commit
         run: |
           git add .
           git commit -m "Initial commit for testing"
           git push origin main
-
-      - name: Set up Git configuration
-        run: |
-          git config user.name "${{ secrets.GH_USERNAME_SG }}"
-          git config user.email "actions@github.com"
 
       - name: Create Git tag v1.2.3 for testing
         run: |
