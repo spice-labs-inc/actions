@@ -28,6 +28,17 @@ jobs:
           echo 'name = "test_project"' >> Cargo.toml
           echo 'version = "1.2.3"' >> Cargo.toml
           cd ..
+        
+      - name: Create initial commit
+        run: |
+          git add .
+          git commit -m "Initial commit for testing"
+          git push origin main
+
+      - name: Set up Git configuration
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
 
       - name: Create Git tag v1.2.3 for testing
         run: |
@@ -36,4 +47,3 @@ jobs:
 
       - name: Run Check Cargo Version Matches Tag action
         uses: ./.github/actions/check-cargo-version
-
