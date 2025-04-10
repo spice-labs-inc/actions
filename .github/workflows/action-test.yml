@@ -37,8 +37,8 @@ jobs:
 
       - name: Set up Git configuration
         run: |
-          git config user.name "SpicyGrzl"
-          git config user.email "spicygrzl@spicelabs.io"
+          git config user.name "${{ secrets.GH_USERNAME_SG }}"
+          git config user.email "actions@github.com"
 
       - name: Create Git tag v1.2.3 for testing
         run: |
@@ -47,4 +47,3 @@ jobs:
 
       - name: Run Check Cargo Version Matches Tag action
         uses: ./.github/actions/check-cargo-version
-
