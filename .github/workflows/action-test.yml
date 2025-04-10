@@ -28,7 +28,7 @@ jobs:
           echo 'name = "test_project"' >> Cargo.toml
           echo 'version = "1.2.3"' >> Cargo.toml
           cd ..
-        
+
       - name: Create initial commit
         run: |
           git add .
@@ -43,7 +43,8 @@ jobs:
       - name: Create Git tag v1.2.3 for testing
         run: |
           git tag v1.2.3
-          git push https://${{ secrets.GH_TOKEN }}@github.com/spice-labs-inc/cargo-version-check.git v1.2.3
+          git push https://${{ secrets.GH_USERNAME_SG }}:${{ secrets.GH_TOKEN }}@github.com/spice-labs-inc/cargo-version-check.git v1.2.3
 
       - name: Run Check Cargo Version Matches Tag action
         uses: ./.github/actions/check-cargo-version
+
