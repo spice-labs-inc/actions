@@ -16,7 +16,7 @@ This GitHub Action ensures that the Git tag (e.g. `v1.2.3`) matches the version 
 ```yaml
 jobs:
   check-version:
-    name: Ensure Git tag matches Cargo.toml version
+    name: Ensure the Git Release version tag matches the Cargo.toml version number
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
