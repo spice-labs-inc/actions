@@ -12,11 +12,11 @@ This GitHub Action ensures that the Git tag (e.g. `v1.2.3`) matches the version 
       - name: Check Cargo version matches tag
         uses: spice-labs-inc/cargo-version-check@v0.0.2
 ```
-#### Complete Workdflow Task
+#### Full Workflow Task
 ```yaml
 jobs:
   check-version:
-    name: Ensure the Git Release version tag matches the Cargo.toml version number
+    name: Ensure GitHub Release & Cargo.toml Version Numbers Match
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
