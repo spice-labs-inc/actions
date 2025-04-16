@@ -1,0 +1,58 @@
+name: Spice Grinder Scan & Upload
+description: Clones or copies input, runs Spice Grinder scan, then uploads results
+
+inputs:
+  repository_url:
+    description: Optional Git repository to clone for scanning
+    required: false
+    default: ""
+  branch:
+    description: Branch to clone
+    required: false
+    default: main
+  file_path:
+    description: Path to local files to scan
+    required: false
+    default: ""
+  config:
+    description: Path to config file inside container
+    required: true
+  mode:
+    description: Upload mode (e.g. public, private)
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Prepare input/output directories
+      shell: bash
+      run: mkdir -p target/input target/output
+
+    - name: Clone from URL
+      if: ${{ inputs.repository_url != '' }}
+      shell: bash
+      run: |
+        git clone --branch ${{ inputs.branch }} --depth 1 ${{ inputs.repository_url }} target/input
+
+    - name: Copy input from path
+      if: ${{ inputs.file_path != '' }}
+      shell: bash
+      run: |
+        cp -r ${{ inputs.file_path }}/* target/input/
+
+    - name: Scan with Spice Grinder
+      shell: bash
+      run: |
+        docker run --platform linux/amd64 --quiet --rm --network none --user $(id -u):$(id -g) \
+        -v $(pwd)/target/input:/input:ro -v $(pwd)/target/output:/output spicelabs/grinder:latest \
+        -c ${{ inputs.config }} -b /input -o /output
+
+    - name: Upload with Spice Grinder
+      shell: bash
+      run: |
+        docker run --platform linux/amd64 --quiet --rm --user $(id -u):$(id -g) \
+        -v $(pwd)/target/output:/output spicelabs/grinder:latest \
+        -c upload -p /output \
+        -j ${{ secrets.GRINDER_JWT }} \
+        -m ${{ inputs.mode }}
+
