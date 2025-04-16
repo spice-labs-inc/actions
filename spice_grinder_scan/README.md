@@ -1,5 +1,5 @@
 ### Spice Grinder Action
-Used to scan your systems and upload the results to a Spice Labs server.
+Used to scan systems and upload the results to a Spice Labs server.
 
 ### Example Usage in Workflow
 ```yaml
