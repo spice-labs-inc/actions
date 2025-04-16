@@ -2,7 +2,6 @@
 Used to scan your systems and upload the results to a Spice Labs server.
 
 ### Example Usage in Workflow
-{%{
 ```yaml
 name: Scan with Spice Grinder
 
@@ -27,4 +26,3 @@ jobs:
         env:
           GRINDER_JWT: ${{ secrets.GRINDER_JWT }}
 ```
-}%}
