@@ -10,8 +10,11 @@ inputs:
   config:
     description: Path to config file inside container
     required: true
-  mode:
-    description: Upload mode (e.g. public, private)
+  type:
+    description: Upload Mime Type, "application/vnd.cc.bigtent" or "bt", or "application/vnd.info.deployevent" or "de"
+    required: true
+  token: 
+    description: Spice Pass JWT
     required: true
 
 runs:
@@ -40,5 +43,5 @@ runs:
         docker run --platform linux/amd64 --quiet --rm --user $(id -u):$(id -g) \
         -v "$(pwd)/target/output:/output" spicelabs/grinder:latest \
         -c upload -p /output \
-        -j ${{ secrets.GRINDER_JWT }} \
-        -m ${{ inputs.mode }}
+        -j ${{ inputs.token }} \
+        -m ${{ inputs.type }}
