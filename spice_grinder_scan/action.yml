@@ -19,7 +19,7 @@ runs:
       run: |
         mkdir -p target/input target/output
         docker run --platform linux/amd64 --quiet --rm --network none --user $(id -u):$(id -g) \
-        -v "${{ inputs.file_path }}:/input:ro" -v "$(pwd)/target/output:/output" "spicelabs/grinder:latest" \
+        -v "$(pwd)${{ inputs.file_path }}:/input:ro" -v "$(pwd)/target/output:/output" "spicelabs/grinder:latest" \
         -c adg -b /input -o /output
         docker run --platform linux/amd64 --quiet --rm --user $(id -u):$(id -g) \
         -v "$(pwd)/target/output:/output" spicelabs/grinder:latest \
