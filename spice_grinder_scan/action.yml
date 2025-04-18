@@ -13,6 +13,9 @@ inputs:
   mode:
     description: Upload mode (e.g. public, private)
     required: true
+  jwt:
+    description: Grinder JWT token
+    required: true
 
 runs:
   using: "composite"
@@ -30,15 +33,15 @@ runs:
     - name: Scan with Spice Grinder
       shell: bash
       run: |
-        docker run --platform linux/amd64 --quiet --rm --network none --user $(id -u):$(id -g) \
-        -v "$(pwd)/target/input:/input:ro" -v "$(pwd)/target/output:/output" "spicelabs/grinder:latest" \
-        -c ${{ inputs.config }} -b /input -o /output
+        docker run --platform linux/amd64 --rm --network none --user $(id -u):$(id -g) \
+        -v "$(pwd)/target/input:/input:ro" -v "$(pwd)/target/output:/output" spicelabs/grinder:latest \
+        -c "${{ inputs.config }}" -b /input -o /output
 
     - name: Upload with Spice Grinder
       shell: bash
       run: |
-        docker run --platform linux/amd64 --quiet --rm --user $(id -u):$(id -g) \
+        docker run --platform linux/amd64 --rm --user $(id -u):$(id -g) \
         -v "$(pwd)/target/output:/output" spicelabs/grinder:latest \
         -c upload -p /output \
-        -j ${{ secrets.GRINDER_JWT }} \
-        -m ${{ inputs.mode }}
+        -j "${{ inputs.jwt }}" \
+        -m "${{ inputs.mode }}"
