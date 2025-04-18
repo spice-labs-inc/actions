@@ -6,39 +6,23 @@ inputs:
   file_path:
     description: Path to local files to scan
     required: false
-    default: ""
-  config:
-    description: Path to config file inside container
-    required: true
-  mode:
-    description: Upload mode (e.g. public, private)
+    default: .
+  token: 
+    description: Spice Pass JWT
     required: true
 
 runs:
   using: "composite"
   steps:
-    - name: Prepare input/output directories
-      shell: bash
-      run: mkdir -p target/input target/output
-
-    - name: Copy input from path
-      if: ${{ inputs.file_path != '' }}
+    - name: Run Spice Grinder
       shell: bash
       run: |
-        cp -r ${{ inputs.file_path }}/* target/input/
-
-    - name: Scan with Spice Grinder
-      shell: bash
-      run: |
+        mkdir -p target/input target/output
         docker run --platform linux/amd64 --quiet --rm --network none --user $(id -u):$(id -g) \
-        -v "$(pwd)/target/input:/input:ro" -v "$(pwd)/target/output:/output" "spicelabs/grinder:latest" \
-        -c ${{ inputs.config }} -b /input -o /output
-
-    - name: Upload with Spice Grinder
-      shell: bash
-      run: |
+        -v "$(pwd)${{ inputs.file_path }}:/input:ro" -v "$(pwd)/target/output:/output" "spicelabs/grinder:latest" \
+        -c adg -b /input -o /output
         docker run --platform linux/amd64 --quiet --rm --user $(id -u):$(id -g) \
         -v "$(pwd)/target/output:/output" spicelabs/grinder:latest \
         -c upload -p /output \
-        -j ${{ secrets.GRINDER_JWT }} \
-        -m ${{ inputs.mode }}
+        -j ${{ inputs.token }} \
+        -m bt
